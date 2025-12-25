@@ -1,0 +1,14 @@
+# machine.txt generated on 2025-12-25T10:33:35
+Manufacturer: ASUSTeK COMPUTER INC.
+Model: VivoBook_ASUS Laptop X505ZA_X505ZA
+Baseboard Manufacturer: ASUSTeK COMPUTER INC.
+Baseboard: X505ZA
+BIOS Vendor: American Megatrends Inc.
+BIOS Version: X505ZA.313
+CPU: AMD Ryzen 5 2500U with Radeon Vega Mobile Gfx
+RAM (GB): 7
+GPU: AMD Radeon(TM) Vega 8 Mobile Graphics
+NIC: Intel(R) Dual Band Wireless-AC 8265
+Disk: SanDisk SD9SN8W512G1102
+OS: Microsoft Windows 10 Famille
+OS Build: 19045
