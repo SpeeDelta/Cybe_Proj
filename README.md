@@ -1,4 +1,3 @@
-```markdown
 # [cite_start]Analyse automatisée des vulnérabilités d'une infrastructure réseau à partir de la Cyber Threat Intelligence (CTI) [cite: 1]
 
 ![Security Badge](https://img.shields.io/badge/Security-CTI-red?style=for-the-badge&logo=target)
@@ -53,7 +52,7 @@ Pour exécuter ce projet, vous devez disposer de :
 git clone [https://github.com/votre-user/projet-3ics-cti.git](https://github.com/votre-user/projet-3ics-cti.git)
 pip install -r requirements.txt
 
-```
+
 
 ## Utilisation
 
