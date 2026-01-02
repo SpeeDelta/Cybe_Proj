@@ -3,35 +3,36 @@ import requests
 import json
 from datetime import datetime
 from pathlib import Path
+import subprocess
+import platform
 
-# --- Configuration / Paramètres ---
-network_range = "45.33.32.156"  # Plage d'IP à scanner
-REPORTS_DIR = "reports"         # Dossier de destination
-
-# Initialisation
 nm = nmap.PortScanner()
-output_lines = []
 
-def log(msg: str):
-    """
-    Ajoute le message au buffer du rapport UNIQUEMENT.
-    Aucun affichage console (print) ici.
-    """
-    output_lines.append(msg)
+def super_scan_de_la_mort_sur(ip_to_scan: str, REPORTS_DIR: str) -> None :
 
-# Petit message console pour dire que ça démarre (ne va pas dans le rapport)
-print(f"[*] Scan en cours sur {network_range}, veuillez patienter...")
+    # Initialisation
+    output_lines = []
 
-# Ajout d'en-tête dans le fichier rapport
-log(f"Rapport de scan pour : {network_range}")
-log(f"Date : {datetime.now()}")
-log("-" * 40)
+    def log(msg: str):
+        """
+        Ajoute le message au buffer du rapport UNIQUEMENT.
+        Aucun affichage console (print) ici.
+        """
+        output_lines.append(msg)
 
-# Lancement du scan Nmap
-nm.scan(hosts=network_range, arguments="-sV")
+    # Petit message console pour dire que ça démarre (ne va pas dans le rapport)
+    print(f"[*] Scan en cours sur {ip_to_scan}, veuillez patienter...")
 
-# Parcours des hôtes
-for host in nm.all_hosts():
+    # Ajout d'en-tête dans le fichier rapport
+    log(f"Rapport de scan pour : {ip_to_scan}")
+    log(f"Date : {datetime.now()}")
+    log("-" * 40)
+
+    # Lancement du scan Nmap
+    nm.scan(hosts=ip_to_scan, arguments="-sV")
+
+    # Parcours des hôtes
+    host = nm.all_hosts()[0]
     hostname = nm[host].hostname() or ""
     host_line = f"Hôte : {host}"
     if hostname:
@@ -39,7 +40,7 @@ for host in nm.all_hosts():
     log(host_line)
 
     if nm[host].state() != "up":
-        continue
+        return 1
 
     for proto in nm[host].all_protocols():
         ports = nm[host][proto].keys()
@@ -125,15 +126,43 @@ for host in nm.all_hosts():
                 else:
                     log(f"        {cve_id} : {description}")
 
-# --- Sauvegarde ---
-try:
-    Path(REPORTS_DIR).mkdir(parents=True, exist_ok=True)
-    ts = datetime.now().strftime("%Y%m%d-%H%M%S")
-    report_file = Path(REPORTS_DIR) / f"scan_network_{ts}.txt"
-    report_file.write_text("\n".join(output_lines), encoding="utf-8")
-    
-    # Seul message de fin visible
-    print(f"[OK] Rapport généré : {report_file.resolve()}")
+    # --- Sauvegarde ---
+    try:
+        Path(REPORTS_DIR).mkdir(parents=True, exist_ok=True)
+        ts = datetime.now().strftime("%Y%m%d-%H%M%S")
+        report_file = Path(REPORTS_DIR) / f"scan_network_{ts}_{host.replace('.', '-')}_{hostname}.txt"
+        report_file.write_text("\n".join(output_lines), encoding="utf-8")
+        
+        # Seul message de fin visible
+        print(f"[OK] Rapport généré : {report_file.resolve()}")
 
-except Exception as e:
-    print(f"[ERREUR] Écriture fichier : {e}")
+    except Exception as e:
+        print(f"[ERREUR] Écriture fichier : {e}")
+
+
+# --- Configuration / Paramètres ---
+
+def scan_ips(addresses: list, report_dir: str) -> None:
+    for ip in addresses:
+        super_scan_de_la_mort_sur(format(ip), report_dir)
+
+def discover_reachable_ips(network):
+    # Create a new Nmap PortScanner object
+    nm = nmap.PortScanner()
+    
+    # Scan the network for live hosts
+    nm.scan(hosts=network, arguments='-sn')  # -sn for Ping Scan
+    
+    reachable_ips = []
+    
+    for host in nm.all_hosts():
+        if nm[host].state() == 'up':
+            reachable_ips.append(host)
+    
+    return reachable_ips
+
+if __name__ == "__main__":
+    # Replace '192.168.1.0/24' with the desired network address and mask
+    network = '192.168.1.0/24'
+    reachable_ips = discover_reachable_ips(network)
+    scan_ips(reachable_ips, "reports")
