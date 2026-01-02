@@ -89,6 +89,3 @@ Les éléments suivants sont attendus pour ce projet:
 
 *Projet 3ICS - 2025-2026* 
 
-```
-
-```
