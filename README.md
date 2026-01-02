@@ -5,7 +5,7 @@
 
 - [Description](#description)
 - [Technologies Utilisées](#technologies-utilisées)
-- [Diagramme de cas d'utilisation](#diagramme-de-cas-dutilisation)
+- [Objectifs](#diagramme-de-cas-dutilisation)
 - [Prérequis](#prérequis)
 - [Installation](#installation)
 - [Utilisation](#utilisation)
@@ -27,11 +27,7 @@ Ce projet vise à développer un outil capable de scanner automatiquement une in
 | ![CTI Data](https://img.shields.io/badge/CTI-CVE_/_NVD-orange?style=for-the-badge) | Extraction des données depuis les bases publiques (OpenCTI, NVD, etc.). |
 | ![Git](https://img.shields.io/badge/git-%23F05033.svg?style=for-the-badge&logo=git&logoColor=white) | Contrôle de version pour le code source du prototype. |
 
-## Diagramme de cas d'utilisation
-
-
-
-Le système permet de remplir les objectifs suivants :
+## Objectifs :
 * **Cartographier automatiquement** l'infrastructure (machines, ports, services, versions logicielles).
 * **Collecter des informations CTI** depuis des sources comme OpenCTI, CVE, CWE, CPE ou NVD.
 * **Réaliser le matching** entre les composants détectés et les vulnérabilités connues.
