@@ -70,15 +70,10 @@ L'application dépend directement de l'accessibilité des bases de données CTI 
 
 Les éléments suivants sont attendus pour ce projet:
 
-* 
 **Code source** de l'outil ou du prototype développé.
 
-
-* 
 **Rapport technique** détaillant la démarche, les choix techniques et les résultats.
 
-
-* 
 **Démonstration** ou présentation du fonctionnement de la solution.
 
 
