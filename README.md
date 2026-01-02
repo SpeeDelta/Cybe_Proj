@@ -1,4 +1,4 @@
-# [cite_start]Analyse automatisée des vulnérabilités d'une infrastructure réseau à partir de la Cyber Threat Intelligence (CTI) [cite: 1]
+# Analyse automatisée des vulnérabilités d'une infrastructure réseau à partir de la Cyber Threat Intelligence (CTI) [cite: 1]
 
 ![Security Badge](https://img.shields.io/badge/Security-CTI-red?style=for-the-badge&logo=target)
 
