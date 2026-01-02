@@ -45,7 +45,10 @@ Pour exécuter ce projet, vous devez disposer de :
 
 ```bash
 git clone [https://github.com/votre-user/projet-3ics-cti.git](https://github.com/votre-user/projet-3ics-cti.git)
-pip install -r requirements.txt
+python -m venv env
+source env/bin/activate
+pip install --upgrade pip
+pip install -r requirements
 
 
 
