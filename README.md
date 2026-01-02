@@ -1,5 +1,4 @@
-# Analyse automatisée des vulnérabilités d'une infrastructure réseau à partir de la Cyber Threat Intelligence (CTI) [cite: 1]
-
+# Analyse automatisée des vulnérabilités d'une infrastructure réseau à partir de la Cyber Threat Intelligence (CTI) 
 ![Security Badge](https://img.shields.io/badge/Security-CTI-red?style=for-the-badge&logo=target)
 
 # Sommaire
@@ -15,36 +14,36 @@
 
 ## Description
 
-[cite_start]Dans un contexte de multiplication des cybermenaces, les entreprises doivent être capables d'identifier rapidement les vulnérabilités de leur système d'information[cite: 3]. [cite_start]Cependant, la détection et la corrélation manuelle entre les actifs réseau (matériels, logiciels, services) et les bases de connaissance de menaces (CTI) constituent une tâche complexe et chronophage[cite: 4].
+Dans un contexte de multiplication des cybermenaces, les entreprises doivent être capables d'identifier rapidement les vulnérabilités de leur système d'information. Cependant, la détection et la corrélation manuelle entre les actifs réseau (matériels, logiciels, services) et les bases de connaissance de menaces (CTI) constituent une tâche complexe et chronophage.
 
-[cite_start]Ce projet vise à développer un outil capable de scanner automatiquement une infrastructure réseau afin d'identifier les composants présents, puis de faire correspondre ces éléments avec les bases de données CTI (telles que CVE, CWE, et CPE) pour détecter les vulnérabilités connues[cite: 5].
+Ce projet vise à développer un outil capable de scanner automatiquement une infrastructure réseau afin d'identifier les composants présents, puis de faire correspondre ces éléments avec les bases de données CTI (telles que CVE, CWE, et CPE) pour détecter les vulnérabilités connues.
 
 ## Technologies Utilisées
 
 | **Nom** | **Description** |
 | ------- | ------------- |
-| ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54) | [cite_start]Langage utilisé pour la conception de l'algorithme et du pipeline[cite: 16]. |
-| ![Network Scan](https://img.shields.io/badge/Scan-Nmap_/_Tools-blue?style=for-the-badge) | [cite_start]Utilisation d'un outil de scan réseau pour la cartographie des actifs[cite: 14]. |
-| ![CTI Data](https://img.shields.io/badge/CTI-CVE_/_NVD-orange?style=for-the-badge) | [cite_start]Extraction des données depuis les bases publiques (OpenCTI, NVD, etc.)[cite: 15]. |
-| ![Git](https://img.shields.io/badge/git-%23F05033.svg?style=for-the-badge&logo=git&logoColor=white) | [cite_start]Contrôle de version pour le code source du prototype[cite: 21]. |
+| ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54) | Langage utilisé pour la conception de l'algorithme et du pipeline[cite: 16]. |
+| ![Network Scan](https://img.shields.io/badge/Scan-Nmap_/_Tools-blue?style=for-the-badge) | Utilisation d'un outil de scan réseau pour la cartographie des actifs. |
+| ![CTI Data](https://img.shields.io/badge/CTI-CVE_/_NVD-orange?style=for-the-badge) | Extraction des données depuis les bases publiques (OpenCTI, NVD, etc.). |
+| ![Git](https://img.shields.io/badge/git-%23F05033.svg?style=for-the-badge&logo=git&logoColor=white) | Contrôle de version pour le code source du prototype. |
 
 ## Diagramme de cas d'utilisation
 
 
 
 Le système permet de remplir les objectifs suivants :
-* [cite_start]**Cartographier automatiquement** l'infrastructure (machines, ports, services, versions logicielles)[cite: 7].
-* [cite_start]**Collecter des informations CTI** depuis des sources comme OpenCTI, CVE, CWE, CPE ou NVD[cite: 8].
-* [cite_start]**Réaliser le matching** entre les composants détectés et les vulnérabilités connues[cite: 9].
-* [cite_start]**Générer des rapports** de vulnérabilité présentant les risques et les correctifs recommandés (Optionnel)[cite: 10].
-* [cite_start]**Visualiser graphiquement** le réseau et les vulnérabilités associées (Optionnel)[cite: 11].
+* **Cartographier automatiquement** l'infrastructure (machines, ports, services, versions logicielles).
+* **Collecter des informations CTI** depuis des sources comme OpenCTI, CVE, CWE, CPE ou NVD.
+* **Réaliser le matching** entre les composants détectés et les vulnérabilités connues.
+* **Générer des rapports** de vulnérabilité présentant les risques et les correctifs recommandés (Optionnel).
+* **Visualiser graphiquement** le réseau et les vulnérabilités associées (Optionnel).
 
 ## Prérequis
 
 Pour exécuter ce projet, vous devez disposer de :
-* [cite_start]Un environnement d'exécution pour le code source[cite: 21].
-* [cite_start]Un outil de scan réseau installé et configuré[cite: 14].
-* [cite_start]Une connexion internet pour l'extraction des données CTI depuis les bases publiques[cite: 15].
+* Un environnement d'exécution pour le code source.
+* Un outil de scan réseau installé et configuré.
+* Une connexion internet pour l'extraction des données CTI depuis les bases publiques.
 
 ## Installation
 
