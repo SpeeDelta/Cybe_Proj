@@ -5,47 +5,49 @@ from datetime import datetime
 from pathlib import Path
 import subprocess
 import platform
+from sys import argv, exit
 
+# Initialisation
 nm = nmap.PortScanner()
+output_lines = []
+network = argv[1] if len(argv) > 1 else '192.168.1.0/24'
+report_dir = argv[2] if len(argv) > 2 else 'reports'
+
+
+def log(msg: str):
+    """
+    Ajoute le message au buffer du rapport UNIQUEMENT.
+    Aucun affichage console (print) ici.
+    """
+    output_lines.append(msg)
 
 def super_scan_de_la_mort_sur(ip_to_scan: str, REPORTS_DIR: str) -> None :
-
-    # Initialisation
-    output_lines = []
-
-    def log(msg: str):
-        """
-        Ajoute le message au buffer du rapport UNIQUEMENT.
-        Aucun affichage console (print) ici.
-        """
-        output_lines.append(msg)
-
-    # Petit message console pour dire que ça démarre (ne va pas dans le rapport)
-    print(f"[*] Scan en cours sur {ip_to_scan}, veuillez patienter...")
 
     # Ajout d'en-tête dans le fichier rapport
     log(f"Rapport de scan pour : {ip_to_scan}")
     log(f"Date : {datetime.now()}")
     log("-" * 40)
 
+    # Petit message console pour dire que ça démarre (ne va pas dans le rapport)
+    print(f"[*] Scan en cours sur {ip_to_scan}, veuillez patienter...")
+
     # Lancement du scan Nmap
     nm.scan(hosts=ip_to_scan, arguments="-sV")
 
     # Parcours des hôtes
-    host = nm.all_hosts()[0]
-    hostname = nm[host].hostname() or ""
-    host_line = f"Hôte : {host}"
+    hostname = nm[ip_to_scan].hostname() or ""
+    host_line = f"Hôte : {ip_to_scan}"
     if hostname:
         host_line += f" ({hostname})"
     log(host_line)
 
-    if nm[host].state() != "up":
+    if nm[ip_to_scan].state() != "up":
         return 1
 
-    for proto in nm[host].all_protocols():
-        ports = nm[host][proto].keys()
+    for proto in nm[ip_to_scan].all_protocols():
+        ports = nm[ip_to_scan][proto].keys()
         for port in sorted(ports):
-            port_info = nm[host][proto][port]
+            port_info = nm[ip_to_scan][proto][port]
             
             if port_info.get('state') != 'open':
                 continue
@@ -126,7 +128,7 @@ def super_scan_de_la_mort_sur(ip_to_scan: str, REPORTS_DIR: str) -> None :
                 else:
                     log(f"        {cve_id} : {description}")
 
-    # --- Sauvegarde ---
+    # Sauvegarde
     try:
         Path(REPORTS_DIR).mkdir(parents=True, exist_ok=True)
         ts = datetime.now().strftime("%Y%m%d-%H%M%S")
@@ -140,29 +142,26 @@ def super_scan_de_la_mort_sur(ip_to_scan: str, REPORTS_DIR: str) -> None :
         print(f"[ERREUR] Écriture fichier : {e}")
 
 
-# --- Configuration / Paramètres ---
+# Programme principal
 
-def scan_ips(addresses: list, report_dir: str) -> None:
-    for ip in addresses:
-        super_scan_de_la_mort_sur(format(ip), report_dir)
+if __name__ == "__main__":
+    if len(argv) > 1:
+        if argv[1] == 'help':
+            print("Utilisation : scan_rzo [network/mask] [report_direcotry]")
+            print("Exemple : scan_rzo 172.19.30.0/25 /home/user/Documents/reports")
+            print("Par défaut - network=192.168.1.0/24 - report_directory=reports/")
+            exit()
 
-def discover_reachable_ips(network):
-    # Create a new Nmap PortScanner object
-    nm = nmap.PortScanner()
-    
-    # Scan the network for live hosts
-    nm.scan(hosts=network, arguments='-sn')  # -sn for Ping Scan
-    
+    print(f"Découverte du réseau {network}...")
     reachable_ips = []
-    
+    nm.scan(hosts=network, arguments='-sn')
     for host in nm.all_hosts():
         if nm[host].state() == 'up':
             reachable_ips.append(host)
-    
-    return reachable_ips
 
-if __name__ == "__main__":
-    # Replace '192.168.1.0/24' with the desired network address and mask
-    network = '192.168.1.0/24'
-    reachable_ips = discover_reachable_ips(network)
-    scan_ips(reachable_ips, "reports")
+    if len(reachable_ips) > 0:
+        print("Découverte du réseau terminée, démarrage de l'analyse.")
+        for ip in reachable_ips:
+            super_scan_de_la_mort_sur(format(ip), report_dir)
+    else:
+        print("Découverte du réseau terminée, aucune machine trouvée.")
