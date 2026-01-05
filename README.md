@@ -50,14 +50,14 @@ source env/bin/activate
 pip install --upgrade pip
 pip install -r requirements
 
-
+```
 
 ## Utilisation
 
 Lancement de la cartographie et de l'analyse de vulnérabilités :
 
 ```bash
-python main.py --target [IP_OU_RESEAU]
+python scan_rzo.py
 
 ```
 
