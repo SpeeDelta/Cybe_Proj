@@ -54,11 +54,8 @@ pip install -r requirements
 
 ## Utilisation
 
-Lancement de la cartographie et de l'analyse de vulnérabilités :
-
 ```bash
-python scan_rzo.py
-
+scan_rzo [network/mask] [report_direcotry] # network et report_directory otpionels
 ```
 
 ## Dépendances
