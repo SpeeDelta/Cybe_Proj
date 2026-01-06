@@ -1,11 +1,12 @@
-# Analyse automatisée des vulnérabilités d'une infrastructure réseau à partir de la Cyber Threat Intelligence (CTI) 
+# Analyse automatisée des vulnérabilités d'une infrastructure réseau à partir de la Cyber Threat Intelligence (CTI)
+
 ![Security Badge](https://img.shields.io/badge/Security-CTI-red?style=for-the-badge&logo=target)
 
-# Sommaire
+## Sommaire
 
 - [Description](#description)
 - [Technologies Utilisées](#technologies-utilisées)
-- [Objectifs](#diagramme-de-cas-dutilisation)
+- [Objectifs](#Objectifs)
 - [Prérequis](#prérequis)
 - [Installation](#installation)
 - [Utilisation](#utilisation)
@@ -27,19 +28,21 @@ Ce projet vise à développer un outil capable de scanner automatiquement une in
 | ![CTI Data](https://img.shields.io/badge/CTI-CVE_/_NVD-orange?style=for-the-badge) | Extraction des données depuis les bases publiques (OpenCTI, NVD, etc.). |
 | ![Git](https://img.shields.io/badge/git-%23F05033.svg?style=for-the-badge&logo=git&logoColor=white) | Contrôle de version pour le code source du prototype. |
 
-## Objectifs :
-* **Cartographier automatiquement** l'infrastructure (machines, ports, services, versions logicielles).
-* **Collecter des informations CTI** depuis des sources comme OpenCTI, CVE, CWE, CPE ou NVD.
-* **Réaliser le matching** entre les composants détectés et les vulnérabilités connues.
-* **Générer des rapports** de vulnérabilité présentant les risques et les correctifs recommandés (Optionnel).
-* **Visualiser graphiquement** le réseau et les vulnérabilités associées (Optionnel).
+## Objectifs  
+
+- **Cartographier automatiquement** l'infrastructure (machines, ports, services, versions logicielles).
+- **Collecter des informations CTI** depuis des sources comme OpenCTI, CVE, CWE, CPE ou NVD.
+- **Réaliser le matching** entre les composants détectés et les vulnérabilités connues.
+- **Générer des rapports** de vulnérabilité présentant les risques et les correctifs recommandés (Optionnel).
+- **Visualiser graphiquement** le réseau et les vulnérabilités associées (Optionnel).
 
 ## Prérequis
 
 Pour exécuter ce projet, vous devez disposer de :
-* Un environnement d'exécution pour le code source.
-* Un outil de scan réseau installé et configuré.
-* Une connexion internet pour l'extraction des données CTI depuis les bases publiques.
+
+- Un environnement d'exécution pour le code source.
+- Un outil de scan réseau installé et configuré.
+- Une connexion internet pour l'extraction des données CTI depuis les bases publiques.
 
 ## Installation
 
@@ -72,9 +75,6 @@ Les éléments suivants sont attendus pour ce projet:
 
 **Démonstration** ou présentation du fonctionnement de la solution.
 
-
-
 ---
 
-*Projet 3ICS - 2025-2026* 
-
+*Projet 3ICS - 2025-2026*  
