@@ -3,14 +3,14 @@ import requests
 from datetime import datetime
 from pathlib import Path
 import subprocess
-from sys import argv, exit
 import ipaddress
+import typer
+from typing import Annotated
 
 # Initialisation
 nm = nmap.PortScanner()
 output_lines = []
-network = argv[1] if len(argv) > 1 else '192.168.1.0/24'
-report_dir = argv[2] if len(argv) > 2 else 'reports'
+app = typer.Typer()
 
 
 def log(msg: str):
@@ -20,7 +20,9 @@ def log(msg: str):
     """
     output_lines.append(msg)
 
-def super_scan_de_la_mort_sur(ip_to_scan: str, REPORTS_DIR: str) -> None :
+
+@app.command()
+def scanip(ip_to_scan: str, REPORTS_DIR: str) -> None :
 
     # Ajout d'en-tête dans le fichier rapport
     log(f"Rapport de scan pour : {ip_to_scan}")
@@ -147,15 +149,12 @@ def super_scan_de_la_mort_sur(ip_to_scan: str, REPORTS_DIR: str) -> None :
 
 
 # Programme principal
-
-if __name__ == "__main__":
-    if len(argv) > 1:
-        if argv[1] == 'help':
-            print("Utilisation : scan_rzo [network/mask] [report_direcotry]")
-            print("Exemple : scan_rzo 172.19.30.0/25 /home/user/Documents/reports")
-            print("Par défaut - network=192.168.1.0/24 - report_directory=reports/")
-            exit()
-
+@app.command()
+def scanet(
+    network: Annotated[str, typer.Option("--network", "-n", help="specify network to scan")] = "192.168.1.0/24",
+    report_dir: Annotated[str, typer.Option("--report-dir", "-d", help="specify directory where reports are created")] = "reports"
+):
+    
     print(f"Découverte du réseau {network}...")
 
     reachable_ips = []
@@ -171,6 +170,10 @@ if __name__ == "__main__":
     if len(reachable_ips) > 0:
         print("Découverte du réseau terminée, démarrage de l'analyse.")
         for ip in reachable_ips:
-            super_scan_de_la_mort_sur(ip, report_dir)
+            scanip(ip, report_dir)
     else:
         print("Découverte du réseau terminée, aucune machine trouvée.")
+
+
+if __name__ == "__main__":
+    app()
