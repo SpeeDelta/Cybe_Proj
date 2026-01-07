@@ -15,14 +15,19 @@ app = typer.Typer()
 
 def log(msg: str):
     """
-    Ajoute le message au buffer du rapport UNIQUEMENT.
-    Aucun affichage console (print) ici.
+    add message to buffer
     """
     output_lines.append(msg)
 
 
 @app.command()
-def scanip(ip_to_scan: str, REPORTS_DIR: str) -> None :
+def scanip(
+    ip_to_scan: str,
+    report_dir: Annotated[str, typer.Option("--report-dir", "-d", help="specify directory where the report is created")] = "reports"
+):
+    """
+    Performs a complete scan of a specific IP address and calls a CVE API to create a CVE report.
+    """
 
     # Ajout d'en-tête dans le fichier rapport
     log(f"Rapport de scan pour : {ip_to_scan}")
@@ -136,9 +141,9 @@ def scanip(ip_to_scan: str, REPORTS_DIR: str) -> None :
 
     # Sauvegarde
     try:
-        Path(REPORTS_DIR).mkdir(parents=True, exist_ok=True)
+        Path(report_dir).mkdir(parents=True, exist_ok=True)
         ts = datetime.now().strftime("%Y%m%d-%H%M%S")
-        report_file = Path(REPORTS_DIR) / f"scan_network_{ts}_{ip_to_scan.replace('.', '-')}_{hostname}.txt"
+        report_file = Path(report_dir) / f"scan_network_{ts}_{ip_to_scan.replace('.', '-')}_{hostname}.txt"
         report_file.write_text("\n".join(output_lines), encoding="utf-8")
         
         # Seul message de fin visible
@@ -154,6 +159,9 @@ def scanet(
     network: Annotated[str, typer.Option("--network", "-n", help="specify network to scan")] = "192.168.1.0/24",
     report_dir: Annotated[str, typer.Option("--report-dir", "-d", help="specify directory where reports are created")] = "reports"
 ):
+    """
+    Performs a scan of a specific network and calls the 'scanip' command for each IP address found.
+    """
     
     print(f"Découverte du réseau {network}...")
 
