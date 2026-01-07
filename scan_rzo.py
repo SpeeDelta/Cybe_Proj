@@ -1,10 +1,8 @@
 import nmap
 import requests
-import json
 from datetime import datetime
 from pathlib import Path
 import subprocess
-import platform
 from sys import argv, exit
 import ipaddress
 
@@ -32,11 +30,16 @@ def super_scan_de_la_mort_sur(ip_to_scan: str, REPORTS_DIR: str) -> None :
     # Petit message console pour dire que ça démarre (ne va pas dans le rapport)
     print(f"[*] Scan en cours sur {ip_to_scan}, veuillez patienter...")
 
-    # Lancement du scan Nmap
-    nm.scan(hosts=ip_to_scan, arguments="-sV")
 
-    # Parcours des hôtes
-    hostname = nm[ip_to_scan].hostname() or ""
+    try:
+        # Lancement du scan Nmap
+        nm.scan(hosts=ip_to_scan, arguments="-sV")
+        hostname = nm[ip_to_scan].hostname() or ""
+    except KeyError:
+        # en cas de problème de scan
+        nm.scan(hosts=ip_to_scan, arguments="-Pn")
+        hostname = nm[ip_to_scan].hostname() or ""
+
     host_line = f"Hôte : {ip_to_scan}"
     if hostname:
         host_line += f" ({hostname})"
@@ -133,7 +136,7 @@ def super_scan_de_la_mort_sur(ip_to_scan: str, REPORTS_DIR: str) -> None :
     try:
         Path(REPORTS_DIR).mkdir(parents=True, exist_ok=True)
         ts = datetime.now().strftime("%Y%m%d-%H%M%S")
-        report_file = Path(REPORTS_DIR) / f"scan_network_{ts}_{host.replace('.', '-')}_{hostname}.txt"
+        report_file = Path(REPORTS_DIR) / f"scan_network_{ts}_{ip_to_scan.replace('.', '-')}_{hostname}.txt"
         report_file.write_text("\n".join(output_lines), encoding="utf-8")
         
         # Seul message de fin visible
@@ -156,26 +159,18 @@ if __name__ == "__main__":
     print(f"Découverte du réseau {network}...")
 
     reachable_ips = []
-    
-    # Scan avec nmap
-    nm.scan(hosts=network, arguments='-sn')
-    for host in nm.all_hosts():
-        if nm[host].state() == 'up':
-            reachable_ips.append(host)
 
     # scan classique
     network_to_ping = ipaddress.IPv4Network(network)
     for ip in network_to_ping.hosts():
-        if format(ip) not in reachable_ips:
-            try:
-                output = subprocess.check_output(["ping", "-c", "1", format(ip)])
-                reachable_ips.append(ip)
-            except subprocess.CalledProcessError:
-                pass
-
+        try:
+            output = subprocess.check_output(["ping", "-c", "1", format(ip)])
+            reachable_ips.append(format(ip))
+        except subprocess.CalledProcessError:
+            pass
     if len(reachable_ips) > 0:
         print("Découverte du réseau terminée, démarrage de l'analyse.")
         for ip in reachable_ips:
-            super_scan_de_la_mort_sur(format(ip), report_dir)
+            super_scan_de_la_mort_sur(ip, report_dir)
     else:
         print("Découverte du réseau terminée, aucune machine trouvée.")
