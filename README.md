@@ -55,7 +55,7 @@ pip install -r requirements
 ## Utilisation
 
 ```bash
-scan_rzo [network/mask] [report_direcotry] # network et report_directory otpionels
+scan_rzo [network/mask] [report_direcotry] # network et report_directory optionels
 ```
 
 ## Dépendances

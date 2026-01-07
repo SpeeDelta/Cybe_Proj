@@ -6,6 +6,7 @@ from pathlib import Path
 import subprocess
 import platform
 from sys import argv, exit
+import ipaddress
 
 # Initialisation
 nm = nmap.PortScanner()
@@ -153,11 +154,24 @@ if __name__ == "__main__":
             exit()
 
     print(f"Découverte du réseau {network}...")
+
     reachable_ips = []
+    
+    # Scan avec nmap
     nm.scan(hosts=network, arguments='-sn')
     for host in nm.all_hosts():
         if nm[host].state() == 'up':
             reachable_ips.append(host)
+
+    # scan classique
+    network_to_ping = ipaddress.IPv4Network(network)
+    for ip in network_to_ping.hosts():
+        if format(ip) not in reachable_ips:
+            try:
+                output = subprocess.check_output(["ping", "-c", "1", format(ip)])
+                reachable_ips.append(format(ip))
+            except subprocess.CalledProcessError:
+                pass
 
     if len(reachable_ips) > 0:
         print("Découverte du réseau terminée, démarrage de l'analyse.")
