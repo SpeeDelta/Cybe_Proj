@@ -169,7 +169,7 @@ if __name__ == "__main__":
         if format(ip) not in reachable_ips:
             try:
                 output = subprocess.check_output(["ping", "-c", "1", format(ip)])
-                reachable_ips.append(format(ip))
+                reachable_ips.append(ip)
             except subprocess.CalledProcessError:
                 pass
 
