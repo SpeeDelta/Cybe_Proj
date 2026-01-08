@@ -152,6 +152,9 @@ def scanip(
     except Exception as e:
         print(f"[ERREUR] Écriture fichier : {e}")
 
+    # reinitialisation du buffer
+    output_lines = []
+
 
 # Programme principal
 @app.command()
