@@ -30,8 +30,9 @@ def scanip(
     """
 
     # Ajout d'en-tête dans le fichier rapport
-    log(f"Rapport de scan pour : {ip_to_scan}")
+    log(f"IP : {ip_to_scan}")
     log(f"Date : {datetime.now()}")
+    log("")
     log("-" * 40)
 
     # Petit message console pour dire que ça démarre (ne va pas dans le rapport)
@@ -47,10 +48,8 @@ def scanip(
         nm.scan(hosts=ip_to_scan, arguments="-Pn")
         hostname = nm[ip_to_scan].hostname() or ""
 
-    host_line = f"Hôte : {ip_to_scan}"
     if hostname:
-        host_line += f" ({hostname})"
-    log(host_line)
+        log(f"Hôte : {hostname}")
 
     if nm[ip_to_scan].state() != "up":
         return 1
@@ -83,9 +82,9 @@ def scanip(
                 cpe_query = None
 
             if cpe_query:
-                log(f"    Port {port}/{proto} – Service : {service_desc} – CPE : {cpe_query}")
+                log(f"Port {port}/{proto} – Service : {service_desc} – CPE : {cpe_query}")
             else:
-                log(f"    Port {port}/{proto} – Service : {service_desc} – CPE non disponible")
+                log(f"Port {port}/{proto} – Service : {service_desc} – CPE non disponible")
             
             if not cpe_query:
                 continue
@@ -95,17 +94,17 @@ def scanip(
             try:
                 response = requests.get(url)
             except Exception as e:
-                log(f"        Erreur requête NVD : {e}")
+                log(f"Erreur requête NVD : {e}")
                 continue
 
             if response.status_code != 200:
-                log(f"        Erreur HTTP {response.status_code}")
+                log(f"Erreur HTTP {response.status_code}")
                 continue
 
             data = response.json()
             vulns = data.get("vulnerabilities", [])
             if not vulns:
-                log("        Aucune vulnérabilité trouvée.")
+                log("Aucune vulnérabilité trouvée.")
                 continue
 
             for vuln in vulns:
@@ -135,11 +134,12 @@ def scanip(
                     cvss_severity = cvss_data.get("baseSeverity") or ""
 
                 if cvss_score is not None:
-                    log(f"        {cve_id} (CVSS {cvss_score} - {cvss_severity}) : {description}")
+                    log(f"{cve_id} (CVSS {cvss_score} - {cvss_severity}) : {description}")
                 else:
-                    log(f"        {cve_id} : {description}")
+                    log(f"{cve_id} : {description}")
 
     # Sauvegarde
+    log("")
     try:
         Path(report_dir).mkdir(parents=True, exist_ok=True)
         ts = datetime.now().strftime("%Y%m%d-%H%M%S")
